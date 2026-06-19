@@ -1,0 +1,39 @@
+# Linux Luminarium — pwn.college Write-up
+
+Platform: pwn.college — Computing 101
+Module: Linux Luminarium
+Date: Week 1 · June 2026
+Challenges Cleared: 22 / 22
+
+
+# What This Module Covers
+Foundation Linux command line skills — directory navigation, file permissions, I/O redirection, piping, and process interaction.
+
+# Challenge Highlight — SUID Binary Abuse
+
+# The Scenario
+A binary had SUID permissions set. Goal: read a flag owned by root as a normal user.
+
+# My Approach
+$ ls -la /challenge/run
+-rwsr-xr-x 1 root root 12345 Jun 2026 /challenge/run
+
+The 's' in 'rws' = SUID bit. Runs as root regardless of who executes it.
+
+$ /challenge/run
+# whoami
+root
+# cat /flag
+pwn.college{fake_flag_for_demo}
+
+# What I Learned
+SUID lets users run a file with the owner's permissions. Misconfigured on shell binaries = trivial privilege escalation. This is exactly what GTFOBins catalogues.
+
+# Key Commands
+ls -la             → list files with permissions
+chmod              → change file permissions
+find / -perm /4000 → find all SUID binaries
+cat /proc/self/status → inspect current process
+
+# Takeaway
+You can't defend what you don't understand. Knowing SUID means I can spot misconfigured permissions in a real environment.
