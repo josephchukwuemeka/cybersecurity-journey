@@ -40,8 +40,11 @@ Currently building offensive fundamentals to complement my detection and respons
        
 # Skills Covered
 Linux · Bash · SUID · Privilege Escalation · PATH Hijack
+
 MySQL Enum · SMB · Redis · RDP
+
 Phishing Triage · C2 Detection · Brute Force Response
+
 Ransomware IR · Log Analysis · Threat Intel · SIEM
 
 # Connect
