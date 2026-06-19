@@ -1,0 +1,56 @@
+# LetsDefend — Phishing Alert #001
+
+Platform: LetsDefend
+Alert Type: Phishing Email · Severity: Medium
+Date: Week 1 · June 2026
+Outcome: True Positive — Escalated 
+
+
+## Alert Details
+Source IP  : 185.234.219.74
+Sender     : hr-noreply@micros0ft-verify.com
+Recipient  : john.doe@companyinternal.com
+Subject    : Urgent: Verify Your Microsoft Account
+Attachment : invoice_june2026.pdf
+
+
+## Investigation
+
+### Step 1 — Sender Domain
+micros0ft-verify.com → zero not 'o'. Typosquat.
+WHOIS: registered 3 days ago. No legit MX records.
+Verdict: Spoofed domain ⚠️
+
+### Step 2 — Source IP Reputation
+185.234.219.74 on VirusTotal + AbuseIPDB:
+47 abuse reports, flagged phishing, Romania.
+Verdict: Malicious IP ⚠️
+
+### Step 3 — Attachment
+PDF → VirusTotal: 18/68 engines flagged.
+Drops payload: %APPDATA%svchost32.exe
+Verdict: Malicious PDF ⚠️
+
+### Step 4 — Recipient Activity
+EDR logs: email opened, PDF in browser sandbox.
+svchost32.exe did NOT execute.
+Verdict: No compromise — contained ✅
+
+
+Final Verdict
+TRUE POSITIVE. Payload did not execute.
+
+
+Actions Taken
+1. Blocked sender domain at email gateway
+2. Blocked source IP at perimeter firewall
+3. Submitted PDF hash to threat intel
+4. Notified recipient's manager
+5. Escalated to Tier 2 for threat hunting
+
+
+What I Learned
+- Typosquatting is trivial and still works
+- PDFs carry active payloads — never assume safe
+- Always escalate even when no compromise
+- WHOIS + IP rep + sandbox = phishing triage
